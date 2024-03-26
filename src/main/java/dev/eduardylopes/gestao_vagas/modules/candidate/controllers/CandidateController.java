@@ -12,7 +12,7 @@ import dev.eduardylopes.gestao_vagas.modules.candidate.useCases.CreateCandidateU
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/candidate")
+@RequestMapping("/candidates")
 public class CandidateController {
   
   @Autowired
