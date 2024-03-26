@@ -35,7 +35,6 @@ public class CompanyEntity {
   private String name;
   private String description;
 
-
   @CreationTimestamp
   private LocalDateTime createdAt;
 
