@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import dev.eduardylopes.gestao_vagas.modules.candidate.CandidateRepository;
 import dev.eduardylopes.gestao_vagas.modules.candidate.dtos.AuthCandidateRequestDTO;
 import dev.eduardylopes.gestao_vagas.modules.candidate.dtos.AuthCandidateResponseDTO;
+import dev.eduardylopes.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import dev.eduardylopes.gestao_vagas.providers.JWTCandidateProvider;
 
 @Service

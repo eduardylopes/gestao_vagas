@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import dev.eduardylopes.gestao_vagas.exceptions.UserFoundException;
-import dev.eduardylopes.gestao_vagas.modules.candidate.CandidateEntity;
-import dev.eduardylopes.gestao_vagas.modules.candidate.CandidateRepository;
+import dev.eduardylopes.gestao_vagas.modules.candidate.entities.CandidateEntity;
+import dev.eduardylopes.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 
 @Service
 public class CreateCandidateUseCase {
