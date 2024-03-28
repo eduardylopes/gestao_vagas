@@ -20,6 +20,8 @@ public class SecurityConfig {
   @Autowired
   private SecurityCompanyFilter securityCompanyFilter;
 
+  private static final String[] SWAGGER_LIST = { "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**" };
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -27,7 +29,8 @@ public class SecurityConfig {
           auth.requestMatchers("/candidates").permitAll()
               .requestMatchers("/companies").permitAll()
               .requestMatchers("/auth/company").permitAll()
-              .requestMatchers("/auth/candidate").permitAll();
+              .requestMatchers("/auth/candidate").permitAll()
+              .requestMatchers(SWAGGER_LIST).permitAll();
 
           auth.anyRequest().authenticated();
         })
