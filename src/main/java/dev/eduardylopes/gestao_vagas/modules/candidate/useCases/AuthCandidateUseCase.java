@@ -43,13 +43,15 @@ public class AuthCandidateUseCase {
       throw new AuthenticationException();
     }
 
+    var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
     var token = JWT.create().withIssuer("eduardylopes")
         .withSubject(candidate.getId().toString())
         .withClaim("roles", Arrays.asList("candidate"))
-        .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+        .withExpiresAt(expiresIn)
         .sign(Algorithm.HMAC256(secretKey));
 
-    return AuthCandidateResponseDTO.builder().access_token(token).build();
+    return AuthCandidateResponseDTO.builder().access_token(token).expires_in(expiresIn.toEpochMilli()).build();
 
   }
 }
