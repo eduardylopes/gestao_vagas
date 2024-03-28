@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyDTO;
+import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyRequestDTO;
 import dev.eduardylopes.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
 
 @RestController
@@ -19,13 +19,13 @@ public class AuthCompanyController {
   AuthCompanyUseCase authCompanyUseCase;
 
   @PostMapping("/company")
-  public ResponseEntity<Object> create(@RequestBody AuthCompanyDTO authCompanyDTO) {
+  public ResponseEntity<Object> auth(@RequestBody AuthCompanyRequestDTO authCompanyDTO) {
 
     try {
       var result = this.authCompanyUseCase.execute(authCompanyDTO);
       return ResponseEntity.ok().body(result);
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
   }
 }
