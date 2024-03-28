@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyDTO;
+import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyRequestDTO;
+import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyResponseDTO;
 import dev.eduardylopes.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
@@ -29,7 +30,7 @@ public class AuthCompanyUseCase {
   @Autowired
   PasswordEncoder passwordEncoder;
 
-  public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+  public AuthCompanyResponseDTO execute(AuthCompanyRequestDTO authCompanyDTO) throws AuthenticationException {
     var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(() -> {
       throw new UsernameNotFoundException("Incorrect username or password");
     });
@@ -45,6 +46,6 @@ public class AuthCompanyUseCase {
         .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
         .sign(Algorithm.HMAC256(secretKey));
 
-    return token;
+    return AuthCompanyResponseDTO.builder().access_token(token).build();
   }
 }
