@@ -6,29 +6,26 @@ import java.time.Instant;
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-
 import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyRequestDTO;
 import dev.eduardylopes.gestao_vagas.modules.company.dtos.AuthCompanyResponseDTO;
 import dev.eduardylopes.gestao_vagas.modules.company.repositories.CompanyRepository;
+import dev.eduardylopes.gestao_vagas.providers.JWTCompanyProvider;
 
 @Service
 public class AuthCompanyUseCase {
-
-  @Value("${security.token.secret}")
-  private String secretKey;
 
   @Autowired
   CompanyRepository companyRepository;
 
   @Autowired
   PasswordEncoder passwordEncoder;
+
+  @Autowired
+  JWTCompanyProvider jwtCompanyProvider;
 
   public AuthCompanyResponseDTO execute(AuthCompanyRequestDTO authCompanyDTO) throws AuthenticationException {
     var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(() -> {
@@ -42,11 +39,7 @@ public class AuthCompanyUseCase {
     }
 
     var expiresIn = Instant.now().plus(Duration.ofHours(2));
-
-    var token = JWT.create().withIssuer("eduardylopes")
-        .withSubject(company.getId().toString())
-        .withExpiresAt(expiresIn)
-        .sign(Algorithm.HMAC256(secretKey));
+    var token = this.jwtCompanyProvider.generateToken(company.getId().toString(), expiresIn);
 
     return AuthCompanyResponseDTO.builder().access_token(token).expires_in(expiresIn.toEpochMilli()).build();
   }
