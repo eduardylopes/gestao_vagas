@@ -41,11 +41,13 @@ public class AuthCompanyUseCase {
       throw new AuthenticationException();
     }
 
+    var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
     var token = JWT.create().withIssuer("eduardylopes")
         .withSubject(company.getId().toString())
-        .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+        .withExpiresAt(expiresIn)
         .sign(Algorithm.HMAC256(secretKey));
 
-    return AuthCompanyResponseDTO.builder().access_token(token).build();
+    return AuthCompanyResponseDTO.builder().access_token(token).expires_in(expiresIn.toEpochMilli()).build();
   }
 }
