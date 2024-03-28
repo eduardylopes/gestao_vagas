@@ -37,7 +37,7 @@ public class SecurityCompanyFilter extends OncePerRequestFilter {
           return;
         }
 
-        request.setAttribute("company_id", decodedJwt);
+        request.setAttribute("company_id", decodedJwt.getSubject());
 
         var roles = decodedJwt.getClaim("roles")
             .asList(String.class)
